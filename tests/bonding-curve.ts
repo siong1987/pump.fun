@@ -211,7 +211,7 @@ describe("bonding_curve", () => {
       expect(mintAccount.address.toString()).to.eq(
         poolMint.publicKey.toString()
       );
-      expect(mintAccount.decimals).to.eq(9);
+      expect(mintAccount.decimals).to.eq(6);
       expect(mintAccount.freezeAuthority).to.be.null;
       expect(mintAccount.mintAuthority).to.be.null;
 
@@ -219,7 +219,7 @@ describe("bonding_curve", () => {
         poolToken
       );
       console.log("Pool token account: ", poolTokenAccount);
-      expect(poolTokenAccount.value).to.eq("10000000000000");
+      expect(poolTokenAccount.value).to.eq("1000000000000000");
     } catch (error) {
       console.log("Error in creating pool", error);
     }

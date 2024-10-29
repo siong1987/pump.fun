@@ -17,6 +17,8 @@ pub fn create_pool(ctx: Context<CreateLiquidityPool>) -> Result<()> {
 
     let token_program = &ctx.accounts.token_program;
 
+    // TODO: create token metadata
+
     // Mint tokens to the pool token account
     let mint_cpi_ctx = CpiContext::new_with_signer(
         token_program.to_account_info(),
@@ -27,7 +29,7 @@ pub fn create_pool(ctx: Context<CreateLiquidityPool>) -> Result<()> {
         },
         pool_signer_seeds,
     );
-    mint_to(mint_cpi_ctx, 10000000000000)?; // TODO: check how much
+    mint_to(mint_cpi_ctx, 1_000_000_000_000_000)?;
 
     // Give up the mint authority
     let give_up_authority_ctx = CpiContext::new_with_signer(
@@ -66,7 +68,7 @@ pub struct CreateLiquidityPool<'info> {
     #[account(
         init,
         payer = payer,
-        mint::decimals = 9, // TODO: check how many
+        mint::decimals = 6,
         mint::authority = pool,
     )]
     pub pool_mint: Account<'info, Mint>,
