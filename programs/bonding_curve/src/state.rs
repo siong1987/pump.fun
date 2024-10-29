@@ -8,20 +8,22 @@ use anchor_spl::token::{self, Mint, Token, TokenAccount};
 
 #[account]
 pub struct CurveConfiguration {
+    pub admin: Pubkey,
     pub fee_bps: u64,
-    pub padding: [u8; 16],
+    pub padding: [u8; 64],
 }
 
 impl CurveConfiguration {
     pub const SEED: &'static str = "CurveConfiguration";
 
-    // Discriminator (8) + u64 (8)
-    pub const ACCOUNT_SIZE: usize = 8 + 8 + 32;
+    // Discriminator (8) + Pubkey (32) + u64 (8) + u8 (64)
+    pub const ACCOUNT_SIZE: usize = 8 + 32 + 8 + 64;
 
-    pub fn new(fee_bps: u64) -> Self {
+    pub fn new(admin: Pubkey, fee_bps: u64) -> Self {
         Self {
+            admin,
             fee_bps,
-            padding: [0u8; 16],
+            padding: [0u8; 64],
         }
     }
 }

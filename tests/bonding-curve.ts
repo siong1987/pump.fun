@@ -159,40 +159,26 @@ describe("bonding_curve", () => {
   //   }
   // })
 
-  it("Initialize the contract", async () => {
-    try {
-      const [curveConfig] = PublicKey.findProgramAddressSync(
-        [Buffer.from(curveSeed)],
-        program.programId
-      );
-      const tx = new Transaction().add(
-        ComputeBudgetProgram.setComputeUnitLimit({ units: 10_000 }),
-        ComputeBudgetProgram.setComputeUnitPrice({ microLamports: 1200_000 }),
-        await program.methods
-          .initialize(1)
-          .accounts({
-            dexConfigurationAccount: curveConfig,
-            admin: user.publicKey,
-            rent: SYSVAR_RENT_PUBKEY,
-            systemProgram: SystemProgram.programId,
-          })
-          .instruction()
-      );
-      tx.feePayer = user.publicKey;
-      tx.recentBlockhash = (await connection.getLatestBlockhash()).blockhash;
-      console.log(await connection.simulateTransaction(tx));
-      const sig = await sendAndConfirmTransaction(connection, tx, [user], {
-        skipPreflight: true,
-      });
-      console.log(
-        "Successfully initialized : ",
-        `https://solscan.io/tx/${sig}?cluster=devnet`
-      );
-      let pool = await program.account.curveConfiguration.fetch(curveConfig);
-      console.log("Pool State : ", pool);
-    } catch (error) {
-      console.log("Error in initialization :", error);
-    }
+  it("initializes the curve configuration", async () => {
+    const [curveConfig] = PublicKey.findProgramAddressSync(
+      [Buffer.from(curveSeed)],
+      program.programId
+    );
+
+    await program.methods
+      .initialize(new BN(1))
+      .accounts({
+        dexConfigurationAccount: curveConfig,
+        admin: user.publicKey,
+        systemProgram: SystemProgram.programId,
+      })
+      .signers([user])
+      .rpc();
+
+    let curveConfiguration = await program.account.curveConfiguration.fetch(
+      curveConfig
+    );
+    console.log("Curve configuration: ", curveConfiguration);
   });
 
   it("create pool", async () => {

@@ -8,7 +8,7 @@ pub fn initialize(ctx: Context<InitializeCurveConfiguration>, fee_bps: u64) -> R
         return err!(CustomError::InvalidFee);
     }
 
-    dex_config.set_inner(CurveConfiguration::new(fee_bps));
+    dex_config.set_inner(CurveConfiguration::new(*ctx.accounts.admin.key, fee_bps));
 
     Ok(())
 }
@@ -26,6 +26,5 @@ pub struct InitializeCurveConfiguration<'info> {
 
     #[account(mut)]
     pub admin: Signer<'info>,
-    pub rent: Sysvar<'info, Rent>,
     pub system_program: Program<'info, System>,
 }
