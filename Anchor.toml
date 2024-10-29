@@ -4,14 +4,11 @@
 seeds = true
 skip-lint = false
 
-[programs.devnet]
+[programs.localnet]
 bonding_curve = "5mdPUgyK9mqosLtqZvfpY5pcpCqQBWHuS3XoU34CrJK3"
 
-[registry]
-url = "https://devnet.helius-rpc.com/?api-key=39d83ffa-585c-4f90-8636-2f6795db4cb3"
-
 [provider]
-cluster = "Devnet"
+cluster = "localnet"
 wallet = "./id.json"
 
 [scripts]

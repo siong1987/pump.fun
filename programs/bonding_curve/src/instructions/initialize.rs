@@ -1,17 +1,14 @@
-use crate::{errors::CustomError, state::*};
+use crate::{errors::CustomError, sell::MAX_FEE_BPS, state::*};
 use anchor_lang::prelude::*;
 
-pub fn initialize(
-    ctx: Context<InitializeCurveConfiguration>,
-    fees: f64,
-) -> Result<()> {
+pub fn initialize(ctx: Context<InitializeCurveConfiguration>, fee_bps: u64) -> Result<()> {
     let dex_config = &mut ctx.accounts.dex_configuration_account;
 
-    if fees < 0_f64 || fees > 100_f64 {
+    if fee_bps > MAX_FEE_BPS {
         return err!(CustomError::InvalidFee);
     }
 
-    dex_config.set_inner(CurveConfiguration::new(fees));
+    dex_config.set_inner(CurveConfiguration::new(fee_bps));
 
     Ok(())
 }

@@ -1,10 +1,10 @@
 use anchor_lang::prelude::*;
 
+pub mod consts;
 pub mod errors;
-pub mod utils;
 pub mod instructions;
 pub mod state;
-pub mod consts;
+pub mod utils;
 
 use crate::instructions::*;
 
@@ -14,17 +14,15 @@ declare_id!("5mdPUgyK9mqosLtqZvfpY5pcpCqQBWHuS3XoU34CrJK3");
 pub mod bonding_curve {
     use super::*;
 
-    pub fn initialize(ctx: Context<InitializeCurveConfiguration>, fee: f64) -> Result<()> {
-        instructions::initialize(ctx, fee)
+    pub fn initialize(ctx: Context<InitializeCurveConfiguration>, fee_bps: u64) -> Result<()> {
+        instructions::initialize(ctx, fee_bps)
     }
 
     pub fn create_pool(ctx: Context<CreateLiquidityPool>) -> Result<()> {
         instructions::create_pool(ctx)
     }
 
-    pub fn add_liquidity(
-        ctx: Context<AddLiquidity>,
-    ) -> Result<()> {
+    pub fn add_liquidity(ctx: Context<AddLiquidity>) -> Result<()> {
         instructions::add_liquidity(ctx)
     }
 
@@ -39,6 +37,4 @@ pub mod bonding_curve {
     pub fn sell(ctx: Context<Sell>, amount: u64, bump: u8) -> Result<()> {
         instructions::sell(ctx, amount, bump)
     }
-    
 }
-

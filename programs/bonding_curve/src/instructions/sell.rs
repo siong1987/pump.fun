@@ -4,6 +4,8 @@ use anchor_spl::{
     token::{Mint, Token, TokenAccount},
 };
 
+pub const MAX_FEE_BPS: u64 = 10_000;
+
 use crate::state::{CurveConfiguration, LiquidityPool, LiquidityPoolAccount};
 
 pub fn sell(ctx: Context<Sell>, amount: u64, bump: u8) -> Result<()> {
